@@ -5,6 +5,7 @@ import android.content.Context;
 import com.karcompany.findoffers.FindOffersApplication;
 import com.karcompany.findoffers.di.modules.ApplicationModule;
 import com.karcompany.findoffers.networking.NetworkModule;
+import com.karcompany.findoffers.presenters.OfferListPresenter;
 import com.karcompany.findoffers.views.activities.BaseActivity;
 import com.karcompany.findoffers.views.activities.OfferListActivity;
 import com.karcompany.findoffers.views.adapters.OfferListAdapter;
@@ -34,7 +35,9 @@ public interface ApplicationComponent {
 	void inject(OfferListActivity offerListActivity);
 
 	void inject(SettingsFragment settingsFragment);
-	
+
+	OfferListPresenter offerListPresenter();
+
 	//Exposed to sub-graphs.
 	Context context();
 }

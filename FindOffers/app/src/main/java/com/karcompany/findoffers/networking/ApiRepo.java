@@ -48,7 +48,9 @@ public class ApiRepo {
 	/*
 	 *   Retrieves offers from server
 	 */
-	public Subscription getOffers(String appId, String userId, final String token, final long pageNo, String gAdId, boolean isAdTrackingLimited, final GetOffersApiCallback callback) {
+	public Subscription getOffers(String appId, String userId, String token, long pageNo, String gAdId, boolean isAdTrackingLimited, final GetOffersApiCallback callback) {
+		final String appToken = token;
+		final long reqPageNo = pageNo;
 		long timeStamp = System.currentTimeMillis() / 1000;
 		String osVersion = android.os.Build.VERSION.RELEASE;
 		StringBuilder paramString = new StringBuilder("");
@@ -112,7 +114,7 @@ public class ApiRepo {
 							try {
 								String jsonResponse = new String(rawResponse.body().bytes());
 								StringBuilder responseStr = new StringBuilder(jsonResponse);
-								responseStr.append(token);
+								responseStr.append(appToken);
 								String hashKey = "";
 								try {
 									hashKey = SecurityUtils.SHA1(responseStr.toString());
@@ -125,9 +127,9 @@ public class ApiRepo {
 									String serverHashKey = rawResponse.headers().get(Constants.API_RESPONSE_HEADER_SEC_KEY);
 									if (!TextUtils.isEmpty(serverHashKey)) {
 										GetOffersApiResponse response = JSONParser.parse(jsonResponse, GetOffersApiResponse.class);
-										DefaultLogger.d(TAG, "onNext -->count-->" + response.getCount() + " page-->" + pageNo);
+										DefaultLogger.d(TAG, "onNext -->count-->" + response.getCount() + " page-->" + reqPageNo);
 										if (response.getCode().equals(Constants.API_RESPONSE_OK) || response.getCode().equals(Constants.API_RESPONSE_NOCONTENT)) {
-											callback.onSuccess(response, pageNo);
+											callback.onSuccess(response, reqPageNo);
 										}
 									}
 								}

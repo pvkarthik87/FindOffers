@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">FindOffers</string>
+    <string name="no_offers">No offers available at this time. Please try again after some time.</string>
+    <string name="error">Some error occurred. Please try again after some time.</string>
 </resources>

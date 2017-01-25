@@ -6,7 +6,11 @@ package com.karcompany.findoffers.views.activities;
  * Displays list of offers available at the moment.
  */
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.karcompany.findoffers.R;
 import com.karcompany.findoffers.di.HasComponent;
@@ -34,4 +38,25 @@ public class OfferListActivity extends BaseActivity implements HasComponent<Appl
 		return getApplicationComponent();
 	}
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.menu_offers, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if(item.getItemId() == R.id.action_settings) {
+			gotToSettingsScreen();
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	private void gotToSettingsScreen() {
+		Intent intent = new Intent(this, AppSettingsActivity.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+		startActivity(intent);
+	}
 }

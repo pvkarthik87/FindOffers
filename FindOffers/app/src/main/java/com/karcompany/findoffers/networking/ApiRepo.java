@@ -35,6 +35,8 @@ public class ApiRepo {
 		void onSuccess(GetOffersApiResponse response, long pageNo);
 
 		void onError(NetworkError networkError);
+
+		void onError();
 	}
 
 	private final RestService mRestService;
@@ -46,7 +48,7 @@ public class ApiRepo {
 	/*
 	 *   Retrieves offers from server
 	 */
-	public Subscription getOffers(String appId, String userId, final long pageNo, String gAdId, boolean isAdTrackingLimited, final GetOffersApiCallback callback) {
+	public Subscription getOffers(String appId, String userId, final String token, final long pageNo, String gAdId, boolean isAdTrackingLimited, final GetOffersApiCallback callback) {
 		long timeStamp = System.currentTimeMillis() / 1000;
 		String osVersion = android.os.Build.VERSION.RELEASE;
 		StringBuilder paramString = new StringBuilder("");
@@ -70,7 +72,7 @@ public class ApiRepo {
 		paramString.append("&");
 		paramString.append(Constants.API_PARAM_USERID + "=" + userId);
 		paramString.append("&");
-		paramString.append(Constants.SERVER_API_KEY);
+		paramString.append(token);
 		String hashKey = "";
 		try {
 			hashKey = SecurityUtils.SHA1(paramString.toString());
@@ -110,7 +112,7 @@ public class ApiRepo {
 							try {
 								String jsonResponse = new String(rawResponse.body().bytes());
 								StringBuilder responseStr = new StringBuilder(jsonResponse);
-								responseStr.append(Constants.SERVER_API_KEY);
+								responseStr.append(token);
 								String hashKey = "";
 								try {
 									hashKey = SecurityUtils.SHA1(responseStr.toString());
@@ -131,6 +133,10 @@ public class ApiRepo {
 								}
 							} catch (IOException e) {
 								DefaultLogger.e(TAG, e.getMessage());
+							}
+						} else {
+							if(rawResponse != null) {
+								callback.onError();
 							}
 						}
 					}

@@ -31,8 +31,6 @@ public class Constants {
 
 	public static final String API_PARAM_GOOGLE_ADID_ISTRACKING_ENABLED = "google_ad_id_limited_tracking_enabled";
 
-	public static final String API_PARAM_FORMAT = "format";
-
 	public static final String API_PARAM_IP = "ip";
 
 	public static final String API_PARAM_LOCALE = "locale";
@@ -61,5 +59,9 @@ public class Constants {
 	public static final String API_RESPONSE_OK = "OK";
 
 	public static final String API_RESPONSE_NOCONTENT = "NO_CONTENT";
+
+	public static final String KEY_APP_ID = "KEY_APP_ID";
+	public static final String KEY_USER_ID = "KEY_USER_ID";
+	public static final String KEY_TOKEN = "KEY_TOKEN";
 
 }

@@ -9,6 +9,7 @@ import com.karcompany.findoffers.views.activities.BaseActivity;
 import com.karcompany.findoffers.views.activities.OfferListActivity;
 import com.karcompany.findoffers.views.adapters.OfferListAdapter;
 import com.karcompany.findoffers.views.fragments.OfferListFragment;
+import com.karcompany.findoffers.views.fragments.SettingsFragment;
 
 import javax.inject.Singleton;
 
@@ -31,6 +32,8 @@ public interface ApplicationComponent {
 	void inject(OfferListFragment offerListFragment);
 
 	void inject(OfferListActivity offerListActivity);
+
+	void inject(SettingsFragment settingsFragment);
 	
 	//Exposed to sub-graphs.
 	Context context();

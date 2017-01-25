@@ -2,6 +2,7 @@ package com.karcompany.findoffers.presenters;
 
 import android.text.TextUtils;
 
+import com.karcompany.findoffers.config.AppConfig;
 import com.karcompany.findoffers.config.Constants;
 import com.karcompany.findoffers.models.GetOffersApiResponse;
 import com.karcompany.findoffers.networking.ApiRepo;
@@ -23,8 +24,7 @@ public class OfferListPresenterImpl implements OfferListPresenter, ApiRepo.GetOf
 
 	private OfferListView mView;
 
-	@Inject
-	ApiRepo mApiRepo;
+	private ApiRepo mApiRepo;
 
 	private boolean mIsLoading;
 	private CompositeSubscription subscriptions;
@@ -32,9 +32,12 @@ public class OfferListPresenterImpl implements OfferListPresenter, ApiRepo.GetOf
 	private String mGAdId;
 	private boolean mGAdTrackingEnabled;
 
+	private AppConfig mAppConfig;
+
 	@Inject
-	public OfferListPresenterImpl(ApiRepo apiRepo) {
+	public OfferListPresenterImpl(ApiRepo apiRepo, AppConfig appConfig) {
 		mApiRepo = apiRepo;
+		mAppConfig = appConfig;
 	}
 
 	@Override
@@ -75,7 +78,7 @@ public class OfferListPresenterImpl implements OfferListPresenter, ApiRepo.GetOf
 	public void loadOffers(long pageNo) {
 		if(TextUtils.isEmpty(mGAdId)) return;
 		mIsLoading = true;
-		Subscription subscription = mApiRepo.getOffers(Constants.SERVER_APP_ID, Constants.USER_ID, pageNo, mGAdId, mGAdTrackingEnabled, this);
+		Subscription subscription = mApiRepo.getOffers(mAppConfig.getAppId(), mAppConfig.getUserId(), mAppConfig.getToken(), pageNo, mGAdId, mGAdTrackingEnabled, this);
 		subscriptions.add(subscription);
 	}
 
@@ -104,5 +107,13 @@ public class OfferListPresenterImpl implements OfferListPresenter, ApiRepo.GetOf
 	public void setAdVertisingDetails(String gAdId, boolean isTrackingEnabled) {
 		mGAdId = gAdId;
 		mGAdTrackingEnabled = isTrackingEnabled;
+	}
+
+	@Override
+	public void onError() {
+		mIsLoading = false;
+		if (mView != null) {
+			mView.onFailure("");
+		}
 	}
 }
